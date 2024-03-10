@@ -5,7 +5,7 @@ def init(
     position: Tuple[int, int] = (0, 0),
     disable_move: bool = False,
     always_on_top: bool = False,
-    tool_window: bool = False
+    tool_window: bool = False,
     title: str = 'layered_window',
 ) -> memoryview: ...
 

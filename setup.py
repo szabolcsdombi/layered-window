@@ -29,7 +29,7 @@ with open('README.md') as readme:
 
 setup(
     name='layered-window',
-    version='0.9.0',
+    version='0.9.1',
     ext_modules=[ext],
     license='MIT',
     platforms=['windows'],

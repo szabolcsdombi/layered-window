@@ -5,6 +5,7 @@
 POINT zero = {0, 0};
 BLENDFUNCTION blend = {AC_SRC_OVER, 0, 255, AC_SRC_ALPHA};
 
+const char * title = "layered_window";
 int disable_move;
 int always_on_top;
 int tool_window;
@@ -46,10 +47,10 @@ void window_thread() {
     SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 
     HINSTANCE hinst = GetModuleHandle(NULL);
-    WNDCLASS wc = {0, CustomWindowProc, 0, 0, hinst, NULL, LoadCursor(NULL, IDC_ARROW), NULL, NULL, "layered"};
+    WNDCLASS wc = {0, CustomWindowProc, 0, 0, hinst, NULL, LoadCursor(NULL, IDC_ARROW), NULL, NULL, "layered_window"};
     RegisterClass(&wc);
 
-    hwnd = CreateWindowEx(window_flags, "layered", NULL, WS_POPUP | WS_VISIBLE, window_pos.x, window_pos.y, 0, 0, NULL, NULL, hinst, NULL);
+    hwnd = CreateWindowEx(window_flags, "layered_window", title, WS_POPUP | WS_VISIBLE, window_pos.x, window_pos.y, 0, 0, NULL, NULL, hinst, NULL);
 
     screen_hdc = GetDC(NULL);
     BITMAPINFO bmi = {{sizeof(BITMAPINFOHEADER), window_size.cx, window_size.cy, 1, 32, BI_RGB, 0, 0, 0, 0, 0}};
@@ -67,11 +68,13 @@ void window_thread() {
 }
 
 static PyObject * meth_init(PyObject * self, PyObject * args, PyObject * kwargs) {
-    const char * keywords[] = {"size", "position", "disable_move", "always_on_top", "tool_window", NULL};
+    const char * keywords[] = {"size", "position", "disable_move", "always_on_top", "tool_window", "title", NULL};
 
     int args_ok = PyArg_ParseTupleAndKeywords(
-        args, kwargs, "(ii)|(ii)ppp", (char **)keywords,
-        &window_size.cx, &window_size.cy, &window_pos.x, &window_pos.y, &disable_move, &always_on_top, &tool_window
+        args, kwargs, "(ii)|(ii)ppps", (char **)keywords,
+        &window_size.cx, &window_size.cy, &window_pos.x, &window_pos.y,
+        &disable_move, &always_on_top, &tool_window,
+        &title
     );
 
     if (!args_ok) {

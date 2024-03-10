@@ -67,7 +67,7 @@ void window_thread() {
 }
 
 static PyObject * meth_init(PyObject * self, PyObject * args, PyObject * kwargs) {
-    const char * keywords[] = {"size", "offset", "disable_move", "always_on_top", "tool_window", NULL};
+    const char * keywords[] = {"size", "position", "disable_move", "always_on_top", "tool_window", NULL};
 
     int args_ok = PyArg_ParseTupleAndKeywords(
         args, kwargs, "(ii)|(ii)ppp", (char **)keywords,
